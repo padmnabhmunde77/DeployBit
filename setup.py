@@ -1,14 +1,16 @@
 from distutils.core import setup
+import textwrap
+
 setup(
   name = 'DeployBit',
   packages = ['DeployBit'],
-  version = '1.1',
+  version = '1.3',
   license='MIT',   
   description = 'A New Door to Salesforce',
+    long_description=open('README.rst', 'r').read(),
+    long_description_content_type='text/x-rst',
   author = 'Padmnabh Munde',
   author_email = 'padmnabhmunde77@gmail.com',
-  url = 'https://github.com/padmnabhmunde77/DeployBit',
-  download_url = 'https://github.com/padmnabhmunde77/DeployBit/archive/refs/tags/1.1.tar.gz' ,
   keywords = ['Salesforce', 'DeployBit','DeployBit Python', 'Deploy','Deployment','Retrieve','Metadata API','SOAP API','Query','SOQL'],
   classifiers=[
     'Development Status :: 3 - Alpha',     
@@ -19,5 +21,6 @@ setup(
     'Programming Language :: Python :: 3.4',
     'Programming Language :: Python :: 3.5',
     'Programming Language :: Python :: 3.6',
+    'Programming Language :: Python :: 3.9',
   ],
 )
