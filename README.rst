@@ -90,7 +90,7 @@ For example:
 
 ``4. Check Deploy Status - check_deploy_status(deployment_id,include_details)``
 
- This method checks current deployment status using provided ``deployment_id``, ``include_details`` as ``True`` and returns deployment/validation details as given in `DeployResult <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deployresult.htm>`__.
+ This method checks current deployment status using provided ``deployment_id``, ``include_details`` as ``True`` and returns deployment/validation details using `DeployResult <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_deployresult.htm>`__.
  
 
 For example:
@@ -154,7 +154,7 @@ For example:
 
 ``8. Describe Metadata - describe_metadata()``
 
- This method uses provided ``api_version`` in DeployBitSalesforce object and retrieves the metadata that describes your organization in `DescribeMetadataResult <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_describemeta_result.htm>`__.
+ This method uses provided ``api_version`` in DeployBitSalesforce object and retrieves the metadata that describes your organization using `DescribeMetadataResult <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_describemeta_result.htm>`__.
 
 For example:
 
@@ -164,6 +164,124 @@ For example:
     sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
     sf.login()
     describe_result=sf.describe_metadata()
-   
-  
+
+----------
+
+``9. List Metadata - list_metadata(metadata_type)``
+
+ This method retrieves property information about metadata components in your organization using provided ``metadata_type`` and ``api_version`` in DeployBitSalesforce object, returns `FileProperties <https://developer.salesforce.com/docs/atlas.en-us.api_meta.meta/api_meta/meta_retrieveresult.htm#retrieveresult_fileproperties>`__.
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    describe_result=sf.list_metadata('ApexClass')
+
+----------
+
+``10. Query - query(query_string,batch_size,is_tooling_api)``
+
+ This method executes a query against the specified object and returns data that matches the specified criteria using `QueryResult <https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_query_queryresult.htm#topic-title>`__.
+ 
+- ``query_string`` - A ``SOQL`` string to be used for query eg. ``SELECT id from Account limit 100``
+- ``batch_size`` - Chunk size of the results to be returned from total records.
+- ``is_tooling_api`` - ``True`` will enable tooling API eg. ``SELECT id from CustomObject``
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    query_result=sf.query("Select Id from Account",batch_size=250)
+
+----------
+
+``11. Query More - query_more(query_locator,batch_size,is_tooling_api)``
+
+ This method retrieves the next batch of objects from a query() and returns data using `QueryResult <https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_query_queryresult.htm#topic-title>`__.
+ 
+- ``query_locator`` - A ``query_locator`` id returned by ``query()`` call in QueryResult
+- ``batch_size`` - Chunk size of the results to be returned from total records.
+- ``is_tooling_api`` - ``True`` will enable tooling API eg. ``SELECT id from CustomObject``
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    query_result=sf.query_more("QueryLocatorId",batch_size=250)
+
+----------
+
+``12. Search - search(search_string,is_tooling_api)``
+
+ This method retrieves the next batch of objects from a query() and returns data using `SearchResult <https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_search_searchresult.htm#topic-title>`__.
+ 
+- ``search_string`` - A ``SOSL`` string to be used for search eg. ``FIND {Test*} IN ALL FIELDS RETURNING Account(Name)``
+- ``is_tooling_api`` - ``True`` will enable tooling API eg. ``FIND {Test*} in all fields returning CustomObject(Id,ManageableState)``
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    search_result=sf.search("FIND {Test*} IN ALL FIELDS RETURNING Account(Name)")
+-----------
+
+``13. Apex Execute - apex_execute(code_chunk,log_category,log_category_level)``
+
+ This method compiles, executes your apex code chunks and returns results/debugs details using `ExecuteAnonymousResult <https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_calls_executeanonymous_result.htm#topic-title>`__ based on ``log_category`` and ``log_category_level`` options availble here `DebuggingHeader <https://developer.salesforce.com/docs/atlas.en-us.api.meta/api/sforce_api_header_debuggingheader.htm>`__.
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    debugString="""List<Account> accList=[select Id,Name from Account limit 10];
+                for(Account acc:accList)
+                {
+                  System.debug('===acc==='+acc.Name);    
+                }"""
+    execute_result=sf.apex_execute(debugString)
+ 
+ -----------
+
+``13. Logout - logout()``
+
+ This method terminates your session. New session can be created using ``login()`` method.
+
+For example:
+
+.. code-block:: python
+
+    from DeployBit import DeployBitSalesforce
+    sf=DeployBitSalesforce('test@test.com','test123','tEstTesting123','45.0','test')
+    sf.login()
+    search_result=sf.search("FIND {Test*} IN ALL FIELDS RETURNING Account(Name)")
+    sf.logout()
+
+Other DeployBit Implementations
+--------------------------
+
+  - `DeployBit Salesforce(LWC) <https://appexchange.salesforce.com/appxListingDetail?listingId=a0N3A00000FR5S9UAL>`__
+  - `DeployBit Android <https://play.google.com/store/apps/details?id=com.deploybit.deploybit>`__
+
+Author
+--------------------------
+
+   DeployBit is written by Padmnabh Munde.
+
+
+
 
