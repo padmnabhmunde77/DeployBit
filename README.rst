@@ -1,7 +1,7 @@
 *****************
 DeployBit
 *****************
-A New Door to Salesforce
+DeployBit - A New Door to Salesforce
 --------------------------
 DeployBit is Salesforce Metadata API based, Lightweight Python Environment to Smoothen and Support your Development and Deployment Processes.
 
@@ -255,9 +255,9 @@ For example:
                 }"""
     execute_result=sf.apex_execute(debugString)
  
- -----------
+-----------
 
-``13. Logout - logout()``
+``14. Logout - logout()``
 
  This method terminates your session. New session can be created using ``login()`` method.
 
